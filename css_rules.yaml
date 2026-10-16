@@ -287,11 +287,13 @@ link_page_rules:
       {
         author: [{ selector: ".cf-friends-name", attr: "text" }],
         link: [{ selector: "a.cf-friends-link", attr: "href" }],
-        avatar: 
-        [
-            { selector: "img.cf-friends-avatar", attr: "src" },
-            { selector: "img.cf-friends-avatar", attr: "cf-src" },
-            { selector: "img.cf-friends-avatar", attr: "data-lazy-src" },
-        ],
+        # 部分主题（如anzhiyu）使用懒加载，真实地址放在 data-lazy-src / cf-src 上，src 属性缺失
+        # 规则按顺序匹配，首个非空结果即短路，因此懒加载属性必须排在 src 之前
+        avatar:
+          [
+            { selector: ".cf-friends-avatar", attr: "data-lazy-src" },
+            { selector: ".cf-friends-avatar", attr: "cf-src" },
+            { selector: ".cf-friends-avatar", attr: "src" },
+          ],
       },
   }
